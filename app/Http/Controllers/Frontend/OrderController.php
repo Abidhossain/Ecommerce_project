@@ -33,7 +33,7 @@ class OrderController extends Controller
                     'prescription' => 'image|mimes:jpeg,png,jpg,pdf,'
                 ]);
 
-      dd($request->all());
+      // dd($request->all());
        $customer_info = CustomerInfo::
                         where('id',$request->customer_id)
                         ->first();
