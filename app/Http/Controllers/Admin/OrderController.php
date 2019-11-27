@@ -105,14 +105,12 @@ public function go_for_ship(Request $request){
     public function on_shipping_view($id){
         $web_data = WebsiteConfig::firstOrFail();
         $order_details = Order::
-        with('customer','order_items')
-            ->where('id',$id)
-            ->first();
+                         with('customer','order_items','shipping')
+                        ->where('id',$id)
+                        ->first();
         $product_order = OrderItem::
-        where('order_id',$order_details->id)
-            ->join('common_images','common_images.imageable_id','=','order_items.id')
-            ->where('imageable_type','App\Model\OrderItem')
-            ->get();
+                         where('order_id',$order_details->id) 
+                         ->get();
         // dd($product_order);
         return view('admin.order.on_ship_view',compact('web_data','order_details','product_order'));
     }
@@ -139,13 +137,11 @@ public function go_for_ship(Request $request){
     public function deliverd_order_view($id){
         $web_data = WebsiteConfig::firstOrFail();
         $order_details = Order::
-        with('customer','order_items')
+        with('customer','order_items','shipping')
             ->where('id',$id)
             ->first();
         $product_order = OrderItem::
-        where('order_id',$order_details->id)
-            ->join('common_images','common_images.imageable_id','=','order_items.id')
-            ->where('imageable_type','App\Model\OrderItem')
+        where('order_id',$order_details->id) 
             ->get();
         // dd($product_order);
         return view('admin.order.delivered_view',compact('web_data','order_details','product_order'));

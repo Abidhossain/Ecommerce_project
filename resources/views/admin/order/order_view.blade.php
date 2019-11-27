@@ -132,7 +132,7 @@
                 <td>{{$details->item_qty}}</td>
                 <td>৳{{$details->item_price*$details->item_qty}}</td>
               <td></td>
-              </tr>
+              </tr>   
            @endforeach
             </tbody>
           </table> 
