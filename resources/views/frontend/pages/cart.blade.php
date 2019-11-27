@@ -66,7 +66,7 @@
                                     <div class="coupon_inner">
                                         <p>Enter your coupon code if you have one.</p> 
                                             <label for="">
-                                                <input placeholder="Coupon code" name="cupon_code" id="cupon_code" type="text">
+                                                <input placeholder="Coupon code" name="cupon_code" id="cupon_code" type="text" value="{{Session::get('cupon_code')}}">
                                             </label>
                                             <input type="text" placeholder="Discount amount" value="{{Session::get('discount_amount')}}" disabled>
                                             <button type="submit" onclick="cuponCode()" id="cupon_btn">Apply coupon</button> 
@@ -95,6 +95,9 @@
                                                 $total = $total-$discount;
                                             @endphp
                                             <p class="cart_amount">৳{{$total}}</p>
+                                        </div>
+                                        <div class="checkout_btn">
+                                            <a href="{{url('cart/place-order')}}">Back To Shopping</a>
                                         </div>
                                         <div class="checkout_btn">
                                             <a href="{{url('cart/place-order')}}">Proceed to Checkout</a>
@@ -163,12 +166,12 @@
             type: 'get', 
             success:function(data){
             $(".cart_c").load(location.href + ' .cart_c');
-              Notiflix.Report.Success( 'WOW Get Cupon', '"Do not try to become a person of success but try to become a person of value." <br><br>Live Pharmacy', 'Click' ); 
+              Notiflix.Report.Success( 'WOW Get Cupon  ৳{{Session::get('discount_amount')}}.00', '"Do not try to become a person of success but try to become a person of value." <br><br>Live Pharmacy', 'Click' ); 
                // $('#contact_form')[0].reset();
             }, 
             error:function (response) {
              console.log(response); 
-               Notiflix.Report.Failure( 'Cupon Failure', '"We are sorry which cupon you entered has no credentials" <br><br>Live Pharmacy', 'Click' ); 
+               Notiflix.Report.Failure( 'No Cupon Found', '"We are sorry which cupon you entered has no credentials" <br><br>Live Pharmacy', 'Click' ); 
             }
         }) 
     }

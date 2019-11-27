@@ -18,7 +18,9 @@ class Order extends Model
      	'outlate',
      	'payment_status',
       'total_vat',
-      'discount'
+      'discount',
+      'payment_info',
+      'order_note'
      ];
 
       public function order_items()

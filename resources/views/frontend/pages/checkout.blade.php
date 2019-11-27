@@ -165,11 +165,11 @@
                                             @endphp
                                             <tbody> 
     @foreach($cart_items as $item)
-        <input type="hidden" name="item_id[]" placeholder="Item id" value="{{$item->id}}">
+        <input type="text" name="item_id[]" placeholder="Item id" value="{{$item->id}}">
         <input type="hidden" name="item_name[]" placeholder="Item Name" value="{{$item->name}}">
         <input type="hidden" name="item_price[]" placeholder="Item Price" value="{{$item->price}}">
         <input type="hidden" name="item_qty[]" placeholder="Item Qty" value="{{$item->qty}}"> 
-        <input type="hidden" name="image[]" placeholder="Item Image" value="{{$item->options->images}}">
+        <input type="hidden" name="item_image[]" placeholder="Item Image" value="{{$item->options->images}}">
             <tr>
                 <td class="text-left">
                         <a href="#" style="font-size: 10px;border-radius: 50%;" class="btn btn-sm btn-danger" onclick="event.preventDefault(); removeCart($(this))"><i class="fa fa-remove"></i></a>&nbsp;&nbsp;&nbsp;
@@ -193,7 +193,6 @@
                         <th class="text-right">Shipping</th>
                         <td>
                             <strong id="shipping_amount"></strong> 
-<input type="hidden" name="shipping_amount" id="ship_amount" placeholder="shipping amount">
                         </td>
                     </tr>
                     <tr>
@@ -205,6 +204,11 @@
                         $discount = Session::get('discount_amount'); 
                         $total = $total-$discount;
                     @endphp
+<!--input-->
+<input type="hidden" name="delivery_charge" id="ship_amount" placeholder="shipping amount">
+<input type="text" name="sub_total" id="subtotal" placeholder="subtotal" value="{{$subtotal}}">
+<input type="text" name="discount" id="discount" placeholder="discount" value="{{$discount}}">
+<!--input-->
                     <tr class="order_total">
                         <th class="text-right">Order Total</th>
                         <td><strong>৳{{$total}}</strong></td>
@@ -220,14 +224,14 @@
                     </div>
                     <div class="payment_method">
                         <div class="panel-default">
-                            <input id="payment" name="check_method" type="radio" data-target="createp_account" />
+                            <input id="payment" name="check_method" type="radio" data-target="createp_account" value="1" required/>
                             <label for="payment" data-toggle="collapse" data-target="#method" aria-controls="method">Cash On Delivery</label>
 
                             <div id="method" class="collapse one" data-parent="#accordion"> 
                             </div>
                         </div>
                         <div class="panel-default">
-                            <input id="payment_defult" name="check_method" type="radio" data-target="createp_account" />
+                            <input id="payment_defult" name="check_method" type="radio" data-target="createp_account" value="2" required/>
                             <label for="payment_defult" data-toggle="collapse" data-target="#collapsedefult" aria-controls="collapsedefult">PayNow <img alt=""></label> 
                             <div id="collapsedefult" class="collapse one" data-parent="#accordion"> 
                             </div>
