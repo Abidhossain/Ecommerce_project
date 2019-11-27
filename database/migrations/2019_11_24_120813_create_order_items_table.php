@@ -19,9 +19,7 @@ class CreateOrderItemsTable extends Migration
             $table->foreign('order_id')->references('id')->on('orders');
             $table->bigInteger('product_id')->nullable();   
             $table->string('item_name')->nullable();
-            $table->string('item_image')->nullable();
-            $table->string('prescription')->nullable();
-            $table->string('order_notes')->nullable();
+            $table->string('item_image')->nullable();  
             $table->integer('item_qty')->nullable();
             $table->float('item_price',8,2)->nullable();     
             $table->timestamps();

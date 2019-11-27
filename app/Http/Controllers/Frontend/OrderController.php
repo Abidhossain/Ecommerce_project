@@ -38,6 +38,7 @@ class OrderController extends Controller
                         where('id',$request->customer_id)
                         ->first();
                         // dd($customer_info); 
+         if(!empty($customer_info->id)){
             //regisstered customer info update
             $customer = CustomerInfo::
                         where('id', $customer_info->id)
@@ -67,8 +68,20 @@ class OrderController extends Controller
                       $prescription->prescription = $image_url;
                       $prescription->save();
                   }
-            //check shipping info and craete or update  
 
+            //insert order items
+            foreach ($request->item_name as $key => $order_items) {
+                $items = OrderItem::create([
+                    'order_id'     => $order_store->id,
+                    'product_id'   => $request->item_id[$key],
+                    'item_name'    => $request->item_name[$key],
+                    'item_image'   => $request->item_image[$key], 
+                    'item_qty'     => $request->item_qty[$key],
+                    'item_price'   => $request->item_price[$key], 
+                ]); 
+            }
+            //check shipping info and craete or update  
+                  $shipping = Shipping::where('customer_id',$customer_info->id)->first();
             if(!empty($shipping)){
                 $customer = Shipping::where('id', $customer_info->id)->update([
                 'customer_id' => $request->customer_id, 
@@ -85,11 +98,47 @@ class OrderController extends Controller
                 $data = $request->all();
                 $shipping = Shipping::create($data);
             }
+
+            if ($items = true) {
+                Cart::destroy();
+                // return redirect('cart/place-order');
+                return 'Order Complete';
+            } 
+         }else{
+            //regisstered customer info update 
+            //insert order
+            $get_order_info=[];
+            $get_order_info['order_date']            = date('m/d/Y');
+            $get_order_info['order_by']              = $request->billing_name;
+            $get_order_info['sub_total']             = $request->sub_total;
+            $get_order_info['delivery_charge']       = $request->delivery_charge;
+            $get_order_info['discount']              = $request->discount;   
+            $get_order_info['payment_info']          = $request->check_method;   
+            $get_order_info['order_notes']          = $request->order_note;   
+            $order_store = Order::create($get_order_info);
+
+            //upload prescription 
+                  if ($request->hasFile('prescription')) {
+                      $files = $request->file('prescription');
+                      $extension = $files->getClientOriginalExtension();
+                      $fileName = str_random(5).".".$extension;
+                      $folderpath = 'Pharmacy/Prescription/';
+                      $image_url = $folderpath.$fileName;
+                      $files->move($folderpath , $fileName); 
+                      $prescription = new Prescription;
+                      $prescription->order_id = $order_store->id;
+                      $prescription->prescription = $image_url;
+                      $prescription->save();
+                  }
+            //check shipping info and craete or update            
+                $data = $request->all();
+                $shipping = Shipping::create($data);
+
             //insert order items
             foreach ($request->item_name as $key => $order_items) {
                 $items = OrderItem::create([
                     'order_id'     => $order_store->id,
-                    'product_id'   => $request->product_id[$key],
+                    'product_id'   => $request->item_id[$key],
                     'item_name'    => $request->item_name[$key],
                     'item_image'   => $request->item_image[$key], 
                     'item_qty'     => $request->item_qty[$key],
@@ -101,6 +150,7 @@ class OrderController extends Controller
                 // return redirect('cart/place-order');
                 return 'Order Complete';
             } 
+         }
     }
     //-------------------Discount Method---------------------//
     public function discount_method($cupon_code){

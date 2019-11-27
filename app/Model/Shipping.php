@@ -8,7 +8,7 @@ class Shipping extends Model
 {
     protected $fillable=[
     	'id',
-    	'order_id',  
+    	'customer_id',  
     	'billing_name',
     	'billing_phone',
     	'billing_email',

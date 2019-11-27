@@ -20,7 +20,7 @@ class Order extends Model
       'total_vat',
       'discount',
       'payment_info',
-      'order_note'
+      'order_notes'
      ];
 
       public function order_items()
