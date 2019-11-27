@@ -52,31 +52,27 @@
               </td>
              <tr>
                <th>Billing Number:</th>
-               <td>{{$order_details->customer->billing_phone}}</td>
+               <td>{{$order_details->shipping->billing_phone}}</td>
              </tr>
              <tr>
                <th width="35%">Billing Name</th>
-               <td>{{$order_details->customer->billing_name}}</td>
+               <td>{{$order_details->shipping->billing_name}}</td>
              </tr>
              <tr>
                <th width="35%">Mail Address</th>
-               <td>{{$order_details->customer->customer_email}}</td>
-             </tr>
-             <tr>
-               <th>Outlate</th>
-               <td>{{$order_details->outlate}}</td>
+               <td>{{!empty($order_details->customer->customer_email)?$order_details->customer->customer_email:'N/A'}}</td>
              </tr> 
                <tr>
                    <th width="35%">Shipping Name</th>
-                   <td>{{$order_details->customer->shipping_name}}</td>
+                   <td>{{$order_details->shipping->shipping_name}}</td>
                </tr>
                <tr>
                    <th width="35%">Shipping Address</th>
-                   <td>{{$order_details->customer->shipping_address}}</td>
+                   <td>{{$order_details->shipping->shipping_address}}</td>
                </tr> 
                <tr>
                    <th>Shippinig Number:</th>
-                   <td>{{$order_details->customer->shipping_phone}}</td>
+                   <td>{{$order_details->shipping->shipping_phone}}</td>
                </tr>
            </table>
          </div>
@@ -112,120 +108,34 @@
          </div>
       <div style="font-size: 14px;" class="col-md-12">
          <div class="row">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Sl.</th>
+                <th class="no-print">Photo</th>
+                <th>Item</th>
+                <th>Price</th>  
+                <th>Quantity</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              @php($i=1)
             @foreach($product_order as $details)
-           <div class="col-md-4">
-              <img style="height: 150px;width: 100%;" src="{{url('/')}}/{{$details->image_path}}" alt="{{$details->image_path}}">
-           </div>
-           <div class="col-md-8 print_design">
-            <div class="container-fluid">
-              <div class="row">
-                <div class="col-md-6 design">
-                 <b>Item Name :</b> {{$details->item_name}}
-                </div>
-                <div class="col-md-6 design">
-                 <b>Item Price :</b>  <span class="tk">৳</span>{{$details->item_price}}
-                </div>
-                <div class="col-md-6 design">
-                 <b>Item Qty :</b> {{$details->item_qty}}
-                </div>
-                <div class="col-md-6 design">
-                  <?php
-                   if(!empty($details->top_layer_flavour)){
-                     echo '<b>Top Tire Flavor : </b>'.$details->top_layer_flavour;
-                   }
-                  ?>
-                </div>
-                <div class="col-md-6 design">
-                  <?php
-                   if(!empty($details->middle_layer_flavour)){
-                     echo '<b>Middle Tire Flavor : </b>'.$details->middle_layer_flavour;
-                   }
-                  ?>
-                </div>
-                <div class="col-md-6 design">
-                  <?php
-                   if(!empty($details->bottom_layer_flavour)){
-                     echo '<b>Bottom Tire Flavor : </b>'.$details->bottom_layer_flavour;
-                   }
-                  ?>
-                </div>
-                <div class="col-md-6 design">
-                  <?php
-                   if(!empty($details->non_tire_cake_flavour)){
-                     echo '<b>Non Tire Flavor : </b>'.$details->non_tire_cake_flavour;
-                   }
-                  ?>
-                </div>
-                <div class="col-md-6 design">
-                  <?php
-                   if(!empty($details->first_layer_sponge)){
-                     echo '<b>1st Layer : </b>'.$details->first_layer_sponge;
-                   }
-                  ?>
-                </div>
-                <div class="col-md-6 design">
-                  <?php
-                   if(!empty($details->second_layer_sponge)){
-                     echo '<b>2nd Layer: </b>'.$details->second_layer_sponge;
-                   }
-                  ?>
-                </div>
-                <div class="col-md-6 design">
-                  <?php
-                   if(!empty($details->third_layer_sponge)){
-                     echo '<b>3rd Layer: </b>'.$details->third_layer_sponge;
-                   }
-                  ?>
-                </div>
-                <div class="col-md-6 design">
-                  <?php
-                   if(!empty($details->first_layer_cream)){
-                     echo '<b>1st Layer Cream : </b>'.$details->first_layer_cream;
-                   }
-                  ?>
-                </div>
-                <div class="col-md-6 design">
-                  <?php
-                   if(!empty($details->second_layer_cream)){
-                     echo '<b>2nd Layer Cream : </b>'.$details->second_layer_cream;
-                   }
-                  ?>
-                </div>
-                <div class="col-md-6 design">
-                  <?php
-                   if(!empty($details->fruit_filling_name)){
-                     echo '<b>Fruit Feeling : </b>'.$details->fruit_filling_name;
-                   }
-                  ?>
-                </div>
-                <div class="col-md-6 design">
-                  <?php
-                   if(!empty($details->message_color)){
-                     echo '<b>Message Color : </b>'.$details->message_color;
-                   }
-                  ?>
-                </div>
-                <div class="col-md-6 design">
-                  <?php
-                   if(!empty($details->message_on_cake)){
-                     echo '<b>Message On Cake : </b>'.$details->message_on_cake;
-                   }
-                  ?>
-                </div>
-                <div class="col-md-6 design">
-                  <?php
-                   if(!empty($details->cake_total_size)){
-                     echo '<b>Cake Size : </b>'.$details->cake_total_size;
-                   }
-                  ?>
-                </div>
-                <div class="col-md-6 design">
-                 <span><b>Total :</b> <span class="tk">৳</span>{{$details->item_price*$details->item_qty}}</span>
-                </div>
-              </div>
-            </div>
-           </div>
+            <tr>
+                <td>{{$i++}}</td>
+                <td class="no-print">
+                  <img height="50px" width="50px" src="{{url('/')}}/{{$details->item_image}}" alt="{{url('/')}}/{{$details->item_image}}">
+                </td>
+                <td>{{$details->item_name}}<br></td>
+                <td>৳{{$details->item_price}}</td> 
+                <td>{{$details->item_qty}}</td>
+                <td>৳{{$details->item_price*$details->item_qty}}</td>
+              <td></td>
+              </tr>
            @endforeach
+            </tbody>
+          </table> 
          </div>
       </div>
            <div class="col-md-6"> <br>

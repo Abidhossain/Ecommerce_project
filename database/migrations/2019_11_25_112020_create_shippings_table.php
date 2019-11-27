@@ -14,8 +14,7 @@ class CreateShippingsTable extends Migration
     public function up()
     {
         Schema::create('shippings', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('customer_id')->nullable();
+            $table->bigIncrements('id'); 
             $table->string('billing_name')->nullable();
             $table->string('billing_email')->nullable();
             $table->string('billing_phone')->nullable();

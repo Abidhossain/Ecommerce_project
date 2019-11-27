@@ -9,6 +9,7 @@ class Order extends Model
      protected $fillable = [
      	'id',
      	'customer_id',
+      'shipping_id',
      	'order_date',
      	'order_take_deliver_time',
      	'order_by',
@@ -30,5 +31,9 @@ class Order extends Model
       public function customer()
       {
            return $this->belongsTo(CustomerInfo::class);
+      }
+      public function shipping()
+      {
+           return $this->belongsTo(Shipping::class);
       }
 }

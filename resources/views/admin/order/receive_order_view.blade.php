@@ -52,31 +52,27 @@
              </tr>
              <tr>
                <th>Billing Number:</th>
-               <td>{{$order_details->customer->billing_phone}}</td>
+               <td>{{$order_details->shipping->billing_phone}}</td>
              </tr>
              <tr>
                <th width="35%">Billing Name</th>
-               <td>{{$order_details->customer->billing_name}}</td>
+               <td>{{$order_details->shipping->billing_name}}</td>
              </tr>
              <tr>
                <th width="35%">Mail Address</th>
-               <td>{{$order_details->customer->customer_email}}</td>
-             </tr>
-             <tr>
-               <th>Outlate</th>
-               <td>{{$order_details->outlate}}</td>
+               <td>{{(!empty($order_details->customer->customer_email)?$order_details->customer->customer_email:'')}}</td>
              </tr> 
                <tr>
                    <th width="35%">Shipping Name</th>
-                   <td>{{$order_details->customer->shipping_name}}</td>
+                   <td>{{$order_details->shipping->shipping_name}}</td>
                </tr>
                <tr>
                    <th width="35%">Shipping Address</th>
-                   <td>{{$order_details->customer->shipping_address}}</td>
+                   <td>{{$order_details->shipping->shipping_address}}</td>
                </tr> 
                <tr>
                    <th>Shippinig Number:</th>
-                   <td>{{$order_details->customer->shipping_phone}}</td>
+                   <td>{{$order_details->shipping->shipping_phone}}</td>
                </tr>
            </table>
          </div>
@@ -260,7 +256,42 @@
 
         </div>
     </div>
+
+            <?php
+                if($order_details->order_status == 1){ ?>
+            <form  action="{{url('go-for-shipping')}}" method="post">
+                @csrf
+                <input type="hidden" name="id" value="{{$order_details->id}}">
+                <div class="col-md-3"></div>
+                <div class="col-md-3"><br>
+                    <label for=""><input autofocus type="text" name="delivered_by" class="from-control d-print-none" placeholder="Deliver by" required></label>
+                </div>
+                <div class="col-md-6">
+                    <button type="submit" class="btn btn-sm btn-success d-print-none">Go for shipping</button>
+
+                    <a href="{{url('cancel-order')}}/{{$order_details->id}}" class="btn btn-sm btn-danger d-print-none">Cancel Order</a>
+
+                    <a onclick="myFunction()" target="_blank" class="btn btn-sm btn-primary text-white d-print-none"><i class="fa fa-fw fa-lg fa-print"></i>Print</a>
+                </div>
+            </form>
+               <?php }elseif($order_details->order_status == 2){ ?>
+            <div class="col-md-12"><br>
+                <button type="submit" class="btn btn-sm btn-success d-print-none">Ship Procesing...</button>
+
+                <a href="{{url('cancel-order')}}/{{$order_details->id}}" class="btn btn-sm btn-danger d-print-none">Cancel Order</a>
+
+                <a onclick="myFunction()" target="_blank" class="btn btn-sm btn-primary text-white d-print-none"><i class="fa fa-fw fa-lg fa-print"></i>Print</a>
+
+                    <span id="customer_signature"> Customer Signature :</span>
+
+            </div>
+                <?php } ?>
+
+        </div>
+    </div>
 @endsection
+
+
 @section('custom_script')
     @if(Session::has('success'))
         <script>
@@ -297,3 +328,4 @@
         }
     </script>
 @endsection
+ 

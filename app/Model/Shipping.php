@@ -8,7 +8,7 @@ class Shipping extends Model
 {
     protected $fillable=[
     	'id',
-    	'customer_id',  
+    	// 'customer_id',  
     	'billing_name',
     	'billing_phone',
     	'billing_email',
@@ -18,4 +18,10 @@ class Shipping extends Model
     	'shipping_email',
     	'shipping_address',
     ];
+
+
+      public function order()
+      {
+           return $this->hasOne(Order::class);
+      }
 }

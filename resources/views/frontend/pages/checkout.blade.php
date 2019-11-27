@@ -136,7 +136,7 @@
                                         <div class="col-lg-6">
                                             <div class="order-notes">
                                                 <label for="order_note">Upload Prescription</label>
-                                               <input type="file" name="prescription" class="form-control">
+                                               <input type="file" name="prescription" class="form-control" onchange="ValidateSize(this)">
                                             </div>
                                         </div>
                                         <div class="col-12">
@@ -306,5 +306,15 @@
             }
         }) 
     }
+
+          function ValidateSize(file) {
+                var FileSize = file.files[0].size / 1024 / 1024; // in MB
+                if (FileSize >= 2) {
+                    alert('File size exceeds 2 MB');
+                   window.location.reload();
+                } else {
+
+                }
+            }
 </script>
  @endsection

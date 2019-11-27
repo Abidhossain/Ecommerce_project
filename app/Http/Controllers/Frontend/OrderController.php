@@ -33,7 +33,7 @@ class OrderController extends Controller
                     'prescription' => 'image|mimes:jpeg,png,jpg,pdf,'
                 ]);
 
-      // dd($request->all());
+      //dd($request->all());
        $customer_info = CustomerInfo::
                         where('id',$request->customer_id)
                         ->first();
@@ -43,9 +43,12 @@ class OrderController extends Controller
             $customer = CustomerInfo::
                         where('id', $customer_info->id)
                         ->update(['full_name' => $customer_info->full_name]);
+            $data = $request->all();
+            $shipping = Shipping::create($data);
             //insert order
             $get_order_info=[];
             $get_order_info['customer_id']           = $customer_info->id;
+            $get_order_info['shipping_id']           = $shipping->id;
             $get_order_info['order_date']            = date('m/d/Y');
             $get_order_info['order_by']              = $request->billing_name;
             $get_order_info['sub_total']             = $request->sub_total;
@@ -80,34 +83,20 @@ class OrderController extends Controller
                     'item_price'   => $request->item_price[$key], 
                 ]); 
             }
-            //check shipping info and craete or update  
-                  $shipping = Shipping::where('customer_id',$customer_info->id)->first();
-            if(!empty($shipping)){
-                $customer = Shipping::where('id', $customer_info->id)->update([
-                'customer_id' => $request->customer_id, 
-                'billing_name' => $request->billing_name, 
-                'billing_email' => $request->billing_email, 
-                'billing_phone' => $request->billing_phone, 
-                'billing_address' => $request->billing_address, 
-                'shipping_name' => $request->shipping_name, 
-                'shipping_email' => $request->shipping_email, 
-                'shipping_phone' => $request->shipping_phone, 
-                'shipping_address' => $request->shipping_address, 
-                ]);
-            }else{
-                $data = $request->all();
-                $shipping = Shipping::create($data);
-            }
-
+        
             if ($items = true) {
                 Cart::destroy();
                 // return redirect('cart/place-order');
                 return 'Order Complete';
             } 
-         }else{
-            //regisstered customer info update 
+         }else{ 
+
+            $data = $request->all();
+            $shipping = Shipping::create($data);
+
             //insert order
             $get_order_info=[];
+            $get_order_info['shipping_id']           = $shipping->id;
             $get_order_info['order_date']            = date('m/d/Y');
             $get_order_info['order_by']              = $request->billing_name;
             $get_order_info['sub_total']             = $request->sub_total;
@@ -129,11 +118,7 @@ class OrderController extends Controller
                       $prescription->order_id = $order_store->id;
                       $prescription->prescription = $image_url;
                       $prescription->save();
-                  }
-            //check shipping info and craete or update            
-                $data = $request->all();
-                $shipping = Shipping::create($data);
-
+                  } 
             //insert order items
             foreach ($request->item_name as $key => $order_items) {
                 $items = OrderItem::create([

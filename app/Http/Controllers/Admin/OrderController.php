@@ -22,15 +22,14 @@ class OrderController extends Controller
     {
         $web_data = WebsiteConfig::firstOrFail();
     	$order_details = Order::
-                         with('customer','order_items')
+                         with('customer','order_items','shipping')
                          ->where('id',$id)
                          ->first();
+       // dd($order_details);
     	$product_order = OrderItem::
-                         where('order_id',$order_details->id)
-                         ->join('common_images','common_images.imageable_id','=','order_items.id')
-                         ->where('imageable_type','App\Model\OrderItem')
+                         where('order_id',$order_details->id) 
                          ->get();
-//    	return $product_order;
+   	// return $product_order;
         return view('admin.order.order_view',compact('web_data','order_details','product_order'));
     }
     //accept order
@@ -48,7 +47,9 @@ class OrderController extends Controller
     }
     //received order
     public function received_order(){
-        $order_info = Order::with('customer')->where('order_status','=','1')->get();
+        $order_info = Order::
+                      with('customer','order_items','shipping')
+                      ->where('order_status','=','1')->get();
        //    	dd($order_info);
         return view('admin.order.received_order',compact('order_info'));
     }
@@ -69,13 +70,11 @@ class OrderController extends Controller
     {
         $web_data = WebsiteConfig::firstOrFail();
         $order_details = Order::
-                         with('customer','order_items')
+                      with('customer','order_items','shipping')
                          ->where('id',$id)
                          ->first();
         $product_order = OrderItem::
-                        where('order_id',$order_details->id)
-                        ->join('common_images','common_images.imageable_id','=','order_items.id')
-                        ->where('imageable_type','App\Model\OrderItem')
+                        where('order_id',$order_details->id) 
                         ->get();
         // dd($product_order);
         return view('admin.order.receive_order_view',compact('web_data','order_details','product_order'));
