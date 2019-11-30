@@ -86,7 +86,7 @@ class OrderController extends Controller
         
             if ($items = true) {
                 Cart::destroy();
-                // return redirect('cart/place-order');
+                // return redirect('cart/place-order');//
                 return 'Order Complete';
             } 
          }else{ 
